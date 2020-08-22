@@ -6,6 +6,20 @@
 <meta charset="UTF-8">
 <title>书城首页</title>
 	<%@include file="/pages/common/head.jsp"%>
+	<Script type="text/javascript">
+		$(function () {
+			// 给加入购物车按钮绑定单击事件
+			$("button.addToCart").click(function () {
+				/**
+				 * 在事件响应的function函数 中，有一个this对象，这个this对象，是当前正在响应事件的dom对象
+				 * @type {jQuery}
+				 */
+				var bookId = $(this).attr("bookId");
+				location.href = "http://localhost:8080/book/cartServlet?action=addItem&id=" + bookId;
+
+			});
+		});
+	</Script>
 </head>
 <body>
 	
@@ -13,8 +27,18 @@
 			<img class="logo_img" alt="" src="static/img/logo.gif" >
 			<span class="wel_word">网上书城</span>
 			<div>
-				<a href="pages/user/login.jsp">登录</a> |
-				<a href="pages/user/regist.jsp">注册</a> &nbsp;&nbsp;
+<%--				如果用户还没有登录 显示登录和注册的菜单--%>
+				<c:if test="${empty sessionScope.user}">
+					<a href="pages/user/login.jsp">登录</a> |
+					<a href="pages/user/regist.jsp">注册</a> &nbsp;
+				</c:if>
+<%--				如果已经登录 显示登陆成功之后的用户信息--%>
+				<c:if test="${not empty sessionScope.user}">
+					<span>欢迎<span class="um_span">${sessionScope.user.username}</span>光临尚硅谷书城</span>
+					<a href="pages/order/order.jsp">我的订单</a>
+					<a href="userServlet?action=logout">注销</a>&nbsp;
+				</c:if>
+				&nbsp;
 				<a href="pages/cart/cart.jsp">购物车</a>
 				<a href="pages/manager/manager.jsp">后台管理</a>
 			</div>
@@ -62,7 +86,7 @@
 						<span class="sp2">${book.stock}</span>
 					</div>
 					<div class="book_add">
-						<button>加入购物车</button>
+						<button bookId=""${book.id} class="addToCart">加入购物车</button>
 					</div>
 				</div>
 			</div>

@@ -87,6 +87,7 @@ public class CartServlet extends BaseServlet {
      * @throws IOException
      */
     protected void addItem(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        System.out.println(req.getParameter("id"));
         // 获取请求的参数 商品编号
         int id = WebUtils.parseInt(req.getParameter("id"), 0);
         // 调用bookService.queryBookById(id):Book得到图书的信息
